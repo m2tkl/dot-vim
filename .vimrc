@@ -170,9 +170,10 @@ nnoremap <leader>w :w<CR>
 " <Space>1 で保存せずに閉じる
 nnoremap <leader>1 :q!<CR>
 
-"
+
+"--------------------
 " Terminal Setting
-"
+"--------------------
 " Ctrl + q でターミナルを閉じる
 tnoremap <C-q> <C-w>:q!<CR>
 
