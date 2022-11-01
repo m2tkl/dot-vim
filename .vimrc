@@ -32,9 +32,6 @@ set nowrap                      " 折り返さない
 set textwidth=0                 " 自動的に改行が入るのを無効化
 
 set background=dark
-if isdirectory(expand("~/.vim/colors/overflow.vim"))
-    colorscheme overflow            " カラースキーマ
-endif
 
 
 "--------------------
@@ -69,15 +66,16 @@ set wildmode=list:longest,full  " 補完モード
 " - "list:longest"            複数のマッチがあるときは、すべてのマッチを羅列し、共通する最長の文字列までが補完される。
 
 
-"set spell                       " スペルチェック (T + sでOn/Offを切り返るため、デフォルトはOffに)
-set spelllang+=cjk              " スペルチェック対象から日本語を除外
+" set spell                     " Spell check (Default is off. Space + S to toggle.)
+set spelllang+=cjk              " Japanese is not subject to check spell
 
-"space + ? で各種設定をtoggle
-nnoremap <silent> <leader>s :setl spell!<CR>:setl spell?<CR>
-nnoremap <silent> <leader>l :setl list!<CR>:setl list?<CR>
-nnoremap <silent> <leader>t :setl expandtab!<CR>:setl expandtab?<CR>
-nnoremap <silent> <leader>w :setl wrap!<CR>:setl wrap?<CR>
-nnoremap <silent> <leader>n :setl number!<CR>:setl number?<CR>
+" Space + ? to toggle some setting
+" NOTE: Combine with shift key because toggling is not used very often.
+nnoremap <silent> <leader>S :setl spell!<CR>:setl spell?<CR>
+nnoremap <silent> <leader>L :setl list!<CR>:setl list?<CR>
+nnoremap <silent> <leader>T :setl expandtab!<CR>:setl expandtab?<CR>
+nnoremap <silent> <leader>W :setl wrap!<CR>:setl wrap?<CR>
+nnoremap <silent> <leader>N :setl number!<CR>:setl number?<CR>
 
 
 "--------------------
@@ -95,7 +93,7 @@ let &t_EI="\e[2 q"
 " 6 : steady bar(xterm).
 
 "--------------------
-" Edit setting
+" Editor setting
 "--------------------
 set clipboard+=unnamed          " OSクリップボード使用
 set backspace=indent,eol,start  " バックスペースでなんでも消せるようにする
@@ -114,6 +112,14 @@ set showmatch                   " 括弧の対応をハイライトする
 set matchtime=1                 " 対応表示時間1秒(~10)
 
 
+augroup fileTypeIndent
+    autocmd!
+    " python
+    autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4
+    " elixir
+    autocmd BufNewFile,BufRead *.exs setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.ex setlocal tabstop=2 softtabstop=2 shiftwidth=2
+augroup END
 
 "--------------------
 " Search setting
@@ -169,6 +175,10 @@ nnoremap <leader>w :w<CR>
 
 " <Space>1 で保存せずに閉じる
 nnoremap <leader>1 :q!<CR>
+
+" <Space>h,l で行頭、末尾に移動する
+nnoremap <leader>h ^
+nnoremap <leader>l $
 
 
 "--------------------
