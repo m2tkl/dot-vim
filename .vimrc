@@ -167,16 +167,16 @@ nnoremap <S-Down>  <C-w>+<CR>
 nnoremap <C-n> gt
 nnoremap <C-p> gT
 
-" <Space>q でファイルを閉じる
+" <Space>+q closes file.
 nnoremap <leader>q :q<CR>
 
-" <Space>w でファイル保存
+" <Space>+w saves file.
 nnoremap <leader>w :w<CR>
 
-" <Space>1 で保存せずに閉じる
+" <Space>+1 close file without saving
 nnoremap <leader>1 :q!<CR>
 
-" <Space>h,l で行頭、末尾に移動する
+" <Space>+h,l moves cursor to 行頭、末尾
 nnoremap <leader>h ^
 nnoremap <leader>l $
 
@@ -184,8 +184,44 @@ nnoremap <leader>l $
 "--------------------
 " Terminal Setting
 "--------------------
-" Ctrl + q でターミナルを閉じる
+" Ctrl+q closes terminal
 tnoremap <C-q> <C-w>:q!<CR>
+
+
+"--------------------
+" Vim-plug
+"--------------------
+" Install vim-plug automatically
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+      silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+
+" Install plugins automatically
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+  \| endif
+
+"" Set plugins
+call plug#begin()
+"" NERDTree
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+
+"" easymotion
+Plug 'easymotion/vim-easymotion'
+
+"" lightline
+Plug 'itchyny/lightline.vim'
+
+"" vim lsp
+" https://github.com/mattn/vim-lsp-settings
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+call plug#end()
 
 
 "--------------------
@@ -198,16 +234,7 @@ let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\.DS_Store$','\.localized', 'working.savedSearch']
 
 " Toggle by 'Cntl+b'
-map <C-b> :NERDTreeToggle<CR>
-
-augroup nerdtreecmd
-    autocmd!
-    " Open NERDTree automatically when no files were specified.
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    " Close if only NERDTree window exists.
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
+map <silent> <leader>b :NERDTreeToggle<CR>
 
 
 "--------------------
