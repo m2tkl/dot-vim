@@ -1,25 +1,29 @@
-"--------------------
-" Leader Setting
-"--------------------
+""
+"" Leader Setting
+""
+
 let mapleader = "\<Space>"
 
-"--------------------
-" Encoding setting
-"--------------------
-set encoding=utf-8              " 内部エンコーディング
+
+""
+"" Encoding
+""
+
+set encoding=utf-8                              " 内部エンコーディング
 set fileencodings=utf-8,iso-2022-jp,euc-jp,sjis " 文字コード自動判別(優先順)
-set fileformats=unix,dos,mac    " 改行コード自動判別(優先順)
+set fileformats=unix,dos,mac                    " 改行コード自動判別(優先順)
 
 
-"--------------------
-" Screen Setting
-"--------------------
+""
+"" Screen
+""
+
 set t_Co=256                    " ターミナルで256色表示を使用
 set number                      " 行番号の表示
 "set ruler                       " 右下に行・列番号を表示
 set list                        " 不可視文字を表示
 " 不可視文字の置き換え設定
-set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲ 
 set noshowmode                  " 最下部のmode表示をoff (pluginで表示するため)
 set showcmd                     " 入力中のコマンドを画面の最下部に表示
 
@@ -34,9 +38,10 @@ set textwidth=0                 " 自動的に改行が入るのを無効化
 set background=dark
 
 
-"--------------------
-" System setting
-"--------------------
+""
+"" System
+""
+
 set nobackup                    " backupファイルを作らない
 set nowritebackup               "
 set noswapfile                  " swapファイルを作らない
@@ -66,11 +71,19 @@ set wildmode=list:longest,full  " 補完モード
 " - "list:longest"            複数のマッチがあるときは、すべてのマッチを羅列し、共通する最長の文字列までが補完される。
 
 
-" set spell                     " Spell check (Default is off. Space + S to toggle.)
+""
+"" Spell check option
+""
+" Default is off. Space + S to toggle.
+""
 set spelllang+=cjk              " Japanese is not subject to check spell
 
-" Space + ? to toggle some setting
+
+""
+"" Space + ? to toggle some setting
+""
 " NOTE: Combine with shift key because toggling is not used very often.
+""
 nnoremap <silent> <leader>S :setl spell!<CR>:setl spell?<CR>
 nnoremap <silent> <leader>L :setl list!<CR>:setl list?<CR>
 nnoremap <silent> <leader>T :setl expandtab!<CR>:setl expandtab?<CR>
@@ -78,12 +91,10 @@ nnoremap <silent> <leader>W :setl wrap!<CR>:setl wrap?<CR>
 nnoremap <silent> <leader>N :setl number!<CR>:setl number?<CR>
 
 
-"--------------------
-" Cursor setting
-"--------------------
-let &t_SI="\e[5 q"
-let &t_EI="\e[2 q"
-" Other options (\e[?)
+""
+"" Cursor setting
+""
+" Options (\e[?)
 " 0 : blinking block.
 " 1 : blinking block(default).
 " 2 : steady block.
@@ -91,10 +102,16 @@ let &t_EI="\e[2 q"
 " 4 : steady underline.
 " 5 : blinking bar(xterm).
 " 6 : steady bar(xterm).
+""
 
-"--------------------
-" Editor setting
-"--------------------
+let &t_SI="\e[5 q"
+let &t_EI="\e[2 q"
+
+
+""
+"" Editor setting
+""
+
 set clipboard+=unnamed          " OSクリップボード使用
 set backspace=indent,eol,start  " バックスペースでなんでも消せるようにする
 
@@ -121,9 +138,11 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.ex setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
-"--------------------
-" Search setting
-"--------------------
+
+""
+"" Search options
+""
+
 set ignorecase                  " 大/小文字無視
 set smartcase                   " ただし大文字を含む検索は区別
 set incsearch                   " インクリメンタルサーチ
@@ -131,16 +150,17 @@ set hlsearch                    " 検索マッチテキストをハイライト
 set wrapscan                    " 検索をファイルの先頭へループ
 
 
-"--------------------
-" Key mappings
-"--------------------
-" insertモードで'jk'を押すとEsc
+""
+"" Key mappings
+""
+
+" 'jk' to Esc on insert mode
 inoremap <silent> jk <ESC>
 
-" ESCを二回押すことでハイライトを消す
+" Remove highlight by Esc twice
 nmap <silent> <Esc><Esc> :nohlsearch<CR>
 
-" カーソル下の単語を * で検索
+" Search the word under the cursor by *
 vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
 
 " j,k による移動を折り返されたテキストでも自然に振る舞うように変更
@@ -151,11 +171,14 @@ nnoremap <silent> k gk
 nnoremap <Tab> %
 vnoremap <Tab> %
 
-" Ctrl + w + hjkl でウィンドウ間を移動
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" Split editor and move
+nnoremap ss :<C-u>sp<CR><C-w>j
+nnoremap sv :<C-u>vs<CR><C-w>l
+nnoremap sh <C-w>h
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+
 
 " Shift + 矢印でウィンドウサイズを変更
 nnoremap <S-Left>  <C-w><<CR>
@@ -181,16 +204,22 @@ nnoremap <leader>h ^
 nnoremap <leader>l $
 
 
-"--------------------
-" Terminal Setting
-"--------------------
+""
+"" Terminal Setting
+""
+
 " Ctrl+q closes terminal
 tnoremap <C-q> <C-w>:q!<CR>
 
 
-"--------------------
-" Vim-plug
-"--------------------
+""
+"" --- plugins ---
+""
+
+""
+"" Vim-plug
+""
+
 " Install vim-plug automatically
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -203,30 +232,30 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source $MYVIMRC
   \| endif
 
-"" Set plugins
+" Set plugins
 call plug#begin()
-"" NERDTree
+" NERDTree
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-
-"" easymotion
+" easymotion
 Plug 'easymotion/vim-easymotion'
-
-"" lightline
+" lightline
 Plug 'itchyny/lightline.vim'
-
-"" vim lsp
-" https://github.com/mattn/vim-lsp-settings
+" vim-lsp (https://github.com/mattn/vim-lsp-settings)
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
+" easy-align (https://github.com/junegunn/vim-easy-align)
+Plug 'junegunn/vim-easy-align'
+" vim-commentary
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 
-"--------------------
-" NERDTree
-"--------------------
+""
+"" NERDTree
+""
+
 " Show hidden files.
 let NERDTreeShowHidden=1
 
@@ -237,9 +266,23 @@ let NERDTreeIgnore=['\.DS_Store$','\.localized', 'working.savedSearch']
 map <silent> <leader>b :NERDTreeToggle<CR>
 
 
-"--------------------
-" lightline
-"--------------------
+""
+"" lightline
+""
+
 " Display status bar always.
 set laststatus=2
 
+
+""
+"" easy-align
+""
+
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+""
+"" vim-commentary
+""
+nmap <leader>c gcc
+vmap <leader>c gc
