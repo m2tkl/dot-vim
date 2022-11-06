@@ -158,7 +158,7 @@ set wrapscan                    " 検索をファイルの先頭へループ
 inoremap <silent> jk <ESC>
 
 " Remove highlight by Esc twice
-nmap <silent> <Esc><Esc> :nohlsearch<CR>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " Search the word under the cursor by *
 vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
@@ -167,17 +167,13 @@ vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<C
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 
-" TABにて対応ペアにジャンプ
-nnoremap <Tab> %
-vnoremap <Tab> %
+" Jump bracket pairs
+nnoremap <leader>p %
+vnoremap <leader>p %
 
-" Split editor and move
-nnoremap ss :<C-u>sp<CR><C-w>j
-nnoremap sv :<C-u>vs<CR><C-w>l
-nnoremap sh <C-w>h
-nnoremap sj <C-w>j
-nnoremap sk <C-w>k
-nnoremap sl <C-w>l
+" Split editor (and focus on new editor)
+nnoremap <C-w>s :<C-u>sp<CR><C-w>j
+nnoremap <C-w>v :<C-u>vs<CR><C-w>l
 
 
 " Shift + 矢印でウィンドウサイズを変更
@@ -186,9 +182,10 @@ nnoremap <S-Right> <C-w>><CR>
 nnoremap <S-Up>    <C-w>-<CR>
 nnoremap <S-Down>  <C-w>+<CR>
 
-" タブ間の移動
-nnoremap <C-n> gt
-nnoremap <C-p> gT
+"" Tab
+nnoremap <leader>t :tabedit <CR>:<C-u>Fern .<CR>        " Open tab
+nnoremap <Tab> :tabnext<CR>     " Focus next tab
+nnoremap <S-Tab> :tabprev<CR>   " Focus previous tab
 
 " <Space>+q closes file.
 nnoremap <leader>q :q<CR>
@@ -202,6 +199,10 @@ nnoremap <leader>1 :q!<CR>
 " <Space>+h,l moves cursor to 行頭、末尾
 nnoremap <leader>h ^
 nnoremap <leader>l $
+
+" Swap ';' and ':'
+nnoremap ; :
+nnoremap : ;
 
 
 ""
@@ -249,6 +250,8 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'junegunn/vim-easy-align'
 " vim-commentary
 Plug 'tpope/vim-commentary'
+" vim filer
+Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 call plug#end()
 
 
@@ -268,7 +271,7 @@ map <silent> <leader>b :NERDTreeToggle<CR>
 
 ""
 "" lightline
-""
+
 
 " Display status bar always.
 set laststatus=2
@@ -281,8 +284,34 @@ set laststatus=2
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
+
 ""
 "" vim-commentary
 ""
 nmap <leader>c gcc
 vmap <leader>c gc
+
+
+""
+"" fern
+""
+let g:fern#default_hidden=1
+nnoremap <silent> <leader>e :<C-u>Fern .<CR>
+
+
+""
+"" easymotion
+""
+" https://github.com/easymotion/vim-easymotion
+
+let g:EasyMotion_smartcase = 1
+
+" Search in file with 2 chars
+nnoremap <leader><leader>f <Plug>(easymotion-s2)
+xmap <leader><leader>f <Plug>(easymotion-s2)
+
+" Replace some of the vim seaches with easymotion
+map f <Plug>(easymotion-fl)
+map F <Plug>(easymotion-Fl)
+map t <Plug>(easymotion-tl)
+map T <Plug>(easymotion-Tl)
