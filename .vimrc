@@ -42,6 +42,8 @@ set background=dark
 "" System
 ""
 
+set nocompatible                " Enable arrow key
+
 set nobackup                    " backupファイルを作らない
 set nowritebackup               "
 set noswapfile                  " swapファイルを作らない
@@ -84,11 +86,11 @@ set spelllang+=cjk              " Japanese is not subject to check spell
 ""
 " NOTE: Combine with shift key because toggling is not used very often.
 ""
-nnoremap <silent> <leader>S :setl spell!<CR>:setl spell?<CR>
-nnoremap <silent> <leader>L :setl list!<CR>:setl list?<CR>
-nnoremap <silent> <leader>T :setl expandtab!<CR>:setl expandtab?<CR>
-nnoremap <silent> <leader>W :setl wrap!<CR>:setl wrap?<CR>
-nnoremap <silent> <leader>N :setl number!<CR>:setl number?<CR>
+nnoremap <silent> <leader><leader>S :setl spell!<CR>:setl spell?<CR>
+nnoremap <silent> <leader><leader>L :setl list!<CR>:setl list?<CR>
+nnoremap <silent> <leader><leader>T :setl expandtab!<CR>:setl expandtab?<CR>
+nnoremap <silent> <leader><leader>W :setl wrap!<CR>:setl wrap?<CR>
+nnoremap <silent> <leader><leader>N :setl number!<CR>:setl number?<CR>
 
 
 ""
@@ -172,20 +174,25 @@ nnoremap <leader>p %
 vnoremap <leader>p %
 
 " Split editor (and focus on new editor)
-nnoremap <C-w>s :<C-u>sp<CR><C-w>j
-nnoremap <C-w>v :<C-u>vs<CR><C-w>l
+nnoremap <leader><leader>s :<C-u>sp<CR><C-w>j
+nnoremap <leader><leader>v :<C-u>vs<CR><C-w>l
 
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
 
-" Shift + 矢印でウィンドウサイズを変更
-nnoremap <S-Left>  <C-w><<CR>
-nnoremap <S-Right> <C-w>><CR>
-nnoremap <S-Up>    <C-w>-<CR>
-nnoremap <S-Down>  <C-w>+<CR>
+" Resize window
+nnoremap <Left>  :vert resize -3<CR>
+nnoremap <Right> :vert resize +3<CR>
+nnoremap <Down>  :resize -3<CR>
+nnoremap <Up>    :resize +3<CR>
+
 
 "" Tab
-nnoremap <leader>t :tabedit <CR>:<C-u>Fern .<CR>        " Open tab
-nnoremap <Tab> :tabnext<CR>     " Focus next tab
-nnoremap <S-Tab> :tabprev<CR>   " Focus previous tab
+nnoremap <leader>t :tabedit <CR>:<C-u>Fern .<CR> " Open tab
+nnoremap <Tab>     :tabnext<CR>                  " Focus next tab
+nnoremap <S-Tab>   :tabprev<CR>                  " Focus next tab
 
 " <Space>+q closes file.
 nnoremap <leader>q :q<CR>
@@ -196,9 +203,11 @@ nnoremap <leader>w :w<CR>
 " <Space>+1 close file without saving
 nnoremap <leader>1 :q!<CR>
 
-" <Space>+h,l moves cursor to 行頭、末尾
-nnoremap <leader>h ^
-nnoremap <leader>l $
+" Moves to 行頭、末尾
+nnoremap H ^
+vnoremap H ^
+nnoremap L $
+vnoremap L $
 
 " Swap ';' and ':'
 nnoremap ; :
@@ -271,6 +280,7 @@ map <silent> <leader>b :NERDTreeToggle<CR>
 
 ""
 "" lightline
+""
 
 
 " Display status bar always.
@@ -307,8 +317,8 @@ nnoremap <silent> <leader>e :<C-u>Fern .<CR>
 let g:EasyMotion_smartcase = 1
 
 " Search in file with 2 chars
-nnoremap <leader><leader>f <Plug>(easymotion-s2)
-xmap <leader><leader>f <Plug>(easymotion-s2)
+nmap <leader>f <Plug>(easymotion-s2)
+xmap <leader>f <Plug>(easymotion-s2)
 
 " Replace some of the vim seaches with easymotion
 map f <Plug>(easymotion-fl)
