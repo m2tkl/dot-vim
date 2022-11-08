@@ -183,14 +183,14 @@ nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
 " Resize window
-nnoremap <Left>  :vert resize -3<CR>
-nnoremap <Right> :vert resize +3<CR>
-nnoremap <Down>  :resize -3<CR>
-nnoremap <Up>    :resize +3<CR>
+nnoremap <silent> <Left>  :vert resize -3<CR>
+nnoremap <silent> <Right> :vert resize +3<CR>
+nnoremap <silent> <Down>  :resize -3<CR>
+nnoremap <silent> <Up>    :resize +3<CR>
 
 
 "" Tab
-nnoremap <leader>t :tabedit <CR>:<C-u>Fern .<CR> " Open tab
+nnoremap <leader><leader>t :tabedit <CR>:<C-u>Fern .<CR> " Open tab
 nnoremap <Tab>     :tabnext<CR>                  " Focus next tab
 nnoremap <S-Tab>   :tabprev<CR>                  " Focus next tab
 
