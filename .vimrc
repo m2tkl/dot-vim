@@ -23,7 +23,7 @@ set number                      " 行番号の表示
 "set ruler                       " 右下に行・列番号を表示
 set list                        " 不可視文字を表示
 " 不可視文字の置き換え設定
-set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲ 
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
 set noshowmode                  " 最下部のmode表示をoff (pluginで表示するため)
 set showcmd                     " 入力中のコマンドを画面の最下部に表示
 
@@ -138,8 +138,18 @@ augroup fileTypeIndent
     " elixir
     autocmd BufNewFile,BufRead *.exs setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.ex setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    " frontend
+    autocmd BufNewFile,BufRead *.html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.css setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.js setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.ts setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
+augroup autoTagClose
+    autocmd!
+    autocmd Filetype html inoremap <buffer> ><CR> ></<C-x><C-o><CR><ESC>F>a<CR><ESC>O
+    autocmd Filetype html inoremap <buffer> ><Tab> ></<C-x><C-o><CR><ESC>F>a
+augroup END
 
 ""
 "" Search options
@@ -209,10 +219,6 @@ vnoremap H ^
 nnoremap L $
 vnoremap L $
 
-" Swap ';' and ':'
-nnoremap ; :
-nnoremap : ;
-
 
 ""
 "" Terminal Setting
@@ -261,6 +267,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 " vim filer
 Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
+" Emmet-vim (https://github.com/mattn/emmet-vim)
+Plug 'mattn/emmet-vim'
 call plug#end()
 
 
@@ -325,3 +333,21 @@ map f <Plug>(easymotion-fl)
 map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
+
+
+""
+"" asyncomplete
+""
+
+" Disable completeopt of asyncomplete (Use default vim completeopt)
+let g:asyncomplete_auto_completeopt = 0
+
+" No line break with Enter when showing completion candidates
+inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+
+" Make the top selected when showing completion.
+set completeopt=menuone,noinsert
+
+" C-n, C-p not inserted
+inoremap <expr><C-n> pumvisible() ? "<Down>" : "<C-n>"
+inoremap <expr><C-p> pumvisible() ? "<Up>" : "<C-p>"
