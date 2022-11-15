@@ -16,18 +16,22 @@ link_to_homedir() {
     for f in $dotfiles_dir/.??*; do
         local f_filename
         f_filename=$(basename "$f")
+
         [[ "$f_filename" == ".DS_Store" || \
             "$f_filename" == ".git" || \
             "$f_filename" == ".gitignore" || \
             "$f_filename" == ".gitmodules" ]] && continue
-        # すでにシンボリックリンクが存在する場合は削除
+
+        # Reset symbolic link If it has already existed.
         if [[ -L "$HOME/$f_filename" ]];then
             command rm -f "$HOME/$f_filename"
         fi
-        # dotファイルまたはディレクトリが存在する場合はbackup
+
+        # Backup dotfiles (or dir)
         if [[ -e "$HOME/$f_filename" ]];then
             command mv "$HOME/$f_filename" "$HOME/.dotbackup"
         fi
+
         command ln -snfv $f $HOME
     done
 }
@@ -49,4 +53,3 @@ done
 
 link_to_homedir
 command echo -e "Install completed!!!"
-
