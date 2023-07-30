@@ -20,8 +20,8 @@ set fileformats=unix,dos,mac                    " 改行コード自動判別(�
 
 set t_Co=256                    " ターミナルで256色表示を使用
 set number                      " 行番号の表示
-"set ruler                       " 右下に行・列番号を表示
-set list                        " 不可視文字を表示
+" set ruler                       " 右下に行・列番号を表示
+" set list                        " 不可視文字を表示
 " 不可視文字の置き換え設定
 set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
 set noshowmode                  " 最下部のmode表示をoff (pluginで表示するため)
@@ -29,7 +29,7 @@ set showcmd                     " 入力中のコマンドを画面の最下部�
 
 syntax on                       " シンタックスハイライト
 set cursorline                  " カーソル行をハイライト
-"set cursorcolumn                " カーソル位置のカラムをハイライト
+" set cursorcolumn                " カーソル位置のカラムをハイライト
 set colorcolumn=80              " 80行目に色をつける
 
 set nowrap                      " 折り返さない
@@ -187,22 +187,22 @@ vnoremap <leader>p %
 nnoremap <leader><leader>s :<C-u>sp<CR><C-w>j
 nnoremap <leader><leader>v :<C-u>vs<CR><C-w>l
 
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+" Move to neighboring window
+nnoremap <leader><leader>h <C-w>h
+nnoremap <leader><leader>j <C-w>j
+nnoremap <leader><leader>k <C-w>k
+nnoremap <leader><leader>l <C-w>l
 
 " Resize window
-nnoremap <silent> <Left>  :vert resize -3<CR>
-nnoremap <silent> <Right> :vert resize +3<CR>
-nnoremap <silent> <Down>  :resize -3<CR>
-nnoremap <silent> <Up>    :resize +3<CR>
+nnoremap <silent><silent> <Left>  :vert resize -3<CR>
+nnoremap <silent><silent> <Right> :vert resize +3<CR>
+nnoremap <silent><silent> <Down>  :resize -3<CR>
+nnoremap <silent><silent> <Up>    :resize +3<CR>
 
 
-"" Tab
-nnoremap <leader><leader>t :tabedit <CR>:<C-u>Fern .<CR> " Open tab
-nnoremap <Tab>     :tabnext<CR>                  " Focus next tab
-nnoremap <S-Tab>   :tabprev<CR>                  " Focus next tab
+" Tab move
+nnoremap <Tab>     :tabnext<CR>
+nnoremap <S-Tab>   :tabprev<CR>
 
 " <Space>+q closes file.
 nnoremap <leader>q :q<CR>
@@ -214,11 +214,10 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>1 :q!<CR>
 
 " Moves to 行頭、末尾
-nnoremap H ^
-vnoremap H ^
-nnoremap L $
-vnoremap L $
-
+nnoremap <leader>h ^
+vnoremap <leader>h ^
+nnoremap <leader>l $
+vnoremap <leader>l $
 
 ""
 "" Terminal Setting
@@ -230,10 +229,6 @@ tnoremap <C-q> <C-w>:q!<CR>
 
 ""
 "" --- plugins ---
-""
-
-""
-"" Vim-plug
 ""
 
 " Install vim-plug automatically
@@ -250,25 +245,38 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 " Set plugins
 call plug#begin()
+
 " NERDTree
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+
 " easymotion
 Plug 'easymotion/vim-easymotion'
+
 " lightline
 Plug 'itchyny/lightline.vim'
+
 " vim-lsp (https://github.com/mattn/vim-lsp-settings)
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
 " easy-align (https://github.com/junegunn/vim-easy-align)
 Plug 'junegunn/vim-easy-align'
+
 " vim-commentary
 Plug 'tpope/vim-commentary'
-" vim filer
+
+" filer (fern)
 Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
+
 " Emmet-vim (https://github.com/mattn/emmet-vim)
 Plug 'mattn/emmet-vim'
+
+" Git
+Plug 'airblade/vim-gitgutter'
+
+
 call plug#end()
 
 
@@ -282,14 +290,13 @@ let NERDTreeShowHidden=1
 " Set files to be hidden.
 let NERDTreeIgnore=['\.DS_Store$','\.localized', 'working.savedSearch']
 
-" Toggle by 'Cntl+b'
+" Toggle 
 map <silent> <leader>b :NERDTreeToggle<CR>
 
 
 ""
 "" lightline
 ""
-
 
 " Display status bar always.
 set laststatus=2
@@ -311,11 +318,20 @@ vmap <leader>c gc
 
 
 ""
-"" fern
+"" fern:conf
 ""
-let g:fern#default_hidden=1
-nnoremap <silent> <leader>e :<C-u>Fern .<CR>
 
+" Show hidden files
+let g:fern#default_hidden=1
+
+" Show file tree 
+nnoremap <leader><leader>e :Fern . -reveal=% <CR>
+
+augroup fern-custom
+    autocmd! *
+    autocmd FileType fern call s:init_fern()
+augroup END
+ 
 
 ""
 "" easymotion
@@ -351,3 +367,25 @@ set completeopt=menuone,noinsert
 " C-n, C-p not inserted
 inoremap <expr><C-n> pumvisible() ? "<Down>" : "<C-n>"
 inoremap <expr><C-p> pumvisible() ? "<Up>" : "<C-p>"
+
+
+"""
+""" Git
+"""
+
+"" git操作
+" g]で前の変更箇所へ移動する
+nnoremap g[ :GitGutterPrevHunk<CR>
+" g[で次の変更箇所へ移動する
+nnoremap g] :GitGutterNextHunk<CR>
+" ghでdiffをハイライトする
+nnoremap gh :GitGutterLineHighlightsToggle<CR>
+" gpでカーソル行のdiffを表示する
+nnoremap gp :GitGutterPreviewHunk<CR>
+" 記号の色を変更する
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=blue
+highlight GitGutterDelete ctermfg=red
+
+"" 反映時間を短くする(デフォルトは4000ms)
+set updatetime=250
